@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float MovementSpeed;
     public float JumpForce;
     public float GravityModifier;
+    public float xRange = 12.0f;
     public bool IsOnGround = true;
 
     // Start is called before the first frame update
@@ -24,11 +25,19 @@ public class PlayerController : MonoBehaviour
     {
 
         HorizontalInput = Input.GetAxis("Horizontal");
-        transform.Translate(Vector3.right * HorizontalInput * Time.deltaTime * MovementSpeed);
+        transform.Translate(Vector3.forward * HorizontalInput * Time.deltaTime * MovementSpeed);
         if (Input.GetKeyDown(KeyCode.Space) && IsOnGround)
         {
             playerRb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
             IsOnGround = false;
+        }
+        if (transform.position.x < -xRange)
+        {
+            transform.position = new Vector3(-xRange, transform.position.y, transform.position.z);
+        }
+        if (transform.position.x > xRange)
+        {
+            transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
         }
         
     }
